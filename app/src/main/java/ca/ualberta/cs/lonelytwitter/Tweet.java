@@ -6,12 +6,25 @@ import java.util.Date;
 /**
  * Created by iali1 on 1/12/16.
  */
-public abstract class Tweet {
+//comparable function implementation http://stackoverflow.com/questions/5927109/sort-objects-in-arraylist-by-date
+public abstract class Tweet implements Comparable<Tweet> {
     protected Date date;
     protected String message;
     protected ArrayList<CurrentMood> moods;
 
     public abstract Boolean isImportant();
+
+    public Date getDate() {
+        return this.date;
+    }
+
+    public String getMessage() {
+        return this.message;
+    }
+
+    public int compareTo(Tweet o){
+        return getDate().compareTo(o.getDate());
+    }
 
     public Tweet(Date date, String message) {
         this.date = date;
