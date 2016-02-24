@@ -22,6 +22,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.concurrent.ExecutionException;
 
 public class LonelyTwitterActivity extends Activity {
 
@@ -58,8 +59,7 @@ public class LonelyTwitterActivity extends Activity {
                 adapter.notifyDataSetChanged();
 
                 // TODO: Replace with Elasticsearch
-                AsyncTask<NormalTweet, Void, Void> execute = new ElasticsearchTweetController.AddTweetTask();
-                execute.execute();
+                AsyncTask<NormalTweet, Void, Void> execute = new ElasticsearchTweetController.AddTweetTask().execute(latestTweet);
                 //saveInFile();
 
                 setResult(RESULT_OK);
@@ -73,7 +73,16 @@ public class LonelyTwitterActivity extends Activity {
 
         // Get latest tweets
         // TODO: Replace with Elasticsearch
-        loadFromFile();
+        ElasticsearchTweetController.GetTweetsTask getTweetsTasks = new ElasticsearchTweetController.GetTweetsTask();
+        try{
+            getTweetsTasks.execute("kappa");
+            tweets = getTweetsTasks.get();
+        } catch (InterruptedException e) {
+             e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+        //loadFromFile();
 
         // Binds tweet list with view, so when our array updates, the view updates with it
         adapter = new ArrayAdapter<Tweet>(this, R.layout.list_item, tweets);
