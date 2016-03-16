@@ -14,7 +14,9 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.concurrent.ExecutionException;
+import java.util.Collections;
 
 public class LonelyTwitterActivity extends Activity {
 
@@ -64,7 +66,7 @@ public class LonelyTwitterActivity extends Activity {
                 String text = bodyText.getText().toString();
                 NormalTweet latestTweet = new NormalTweet(text);
 
-                tweets.add(latestTweet);
+                tweets.add(0,latestTweet);
 
                 latestTweet.addThumbnail(thumbnail);
 
@@ -94,6 +96,7 @@ public class LonelyTwitterActivity extends Activity {
         try {
             tweets = new ArrayList<Tweet>();
             tweets.addAll(getTweetsTask.get());
+            Collections.sort(tweets, Collections.reverseOrder());
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {

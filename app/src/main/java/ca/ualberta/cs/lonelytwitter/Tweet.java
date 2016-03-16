@@ -11,7 +11,7 @@ import java.util.Date;
 
 import io.searchbox.annotations.JestId;
 
-public abstract class Tweet {
+public abstract class Tweet implements Comparable<Tweet>{
     @JestId
     protected String id;
 
@@ -97,5 +97,9 @@ public abstract class Tweet {
             thumbnail = BitmapFactory.decodeByteArray(decodeString, 0, decodeString.length);
         }
         return thumbnail;
+    }
+
+    public int compareTo(Tweet o){
+        return getDate().compareTo(o.getDate());
     }
 }
